@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
+	"io/ioutil"
 )
 
 func main() {
@@ -46,4 +47,11 @@ func main() {
 	// slice. The nonce must be NonceSize() bytes long and unique for all
 	// time, for a given key.
 	fmt.Println(gcm.Seal(nonce, nonce, text, nil))
+	// the WriteFile method returns an error if unsuccessful
+	err = ioutil.WriteFile("myfile.data", gcm.Seal(nonce, nonce, text, nil), 0777)
+	// handle this error
+	if err != nil {
+		// print it out
+		fmt.Println(err)
+	}
 }
